@@ -1,10 +1,19 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
-			<card-viewer></card-viewer>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					{{presenter.content}}
+				</div>
+			</div>
+			<button type="button" class="btn btn-default" ng-click="presenter.next()">Next</button>
+			<button type="button" class="btn btn-default" ng-click="presenter.back()">Back</button>
+			<button type="button" class="btn btn-default" ng-click="presenter.flip()">Flip</button>
+			<button type="button" class="btn btn-default">Edit</button>
 		</div>
 		<div class="col-md-6">
 			<textarea class="form-control" rows="10">deck</textarea>
+			<button type="button" class="btn btn-default">Parse</button>
 		</div>
 	</div>
 </div>

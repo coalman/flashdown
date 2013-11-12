@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('app')
-  .factory('deck', function () {
+app.factory('deck', function () {
     
     return {
       name: "name",

@@ -8,15 +8,6 @@ app.factory('deck', function () {
       cards: [
         { front: 'first1', back: 'the back' },
         { front: 'second2', back: 'the back' }
-      ],
-      addCard: function(f, b) {
-        this.cards.push({
-          front: f,
-          back: b
-        });
-      },
-      loadJson: function(json) {
-        
-      }
+      ]
     };
   });

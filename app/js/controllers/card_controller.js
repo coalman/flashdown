@@ -39,6 +39,11 @@ app.controller('CardController', function($scope, DeckService) {
 	$scope.$watch('deckService.deck', function(newValue, oldValue) {
 		$scope.presenter.reset($scope.deckService.deck);
 	});
+
+	$scope.editing = false;
+	$scope.edit = function() {
+		$scope.editing = !($scope.editing);
+	};
 	$scope.parse = function(rawText, deckService) {
 		deckService.deck = parser.parse(rawText);
 	};

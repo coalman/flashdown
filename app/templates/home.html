@@ -7,9 +7,9 @@
 			<button type="button" class="btn btn-default" ng-click="presenter.next(deckService.deck)">Next</button>
 			<button type="button" class="btn btn-default" ng-click="presenter.back(deckService.deck)">Back</button>
 			<button type="button" class="btn btn-default" ng-click="presenter.flip(deckService.deck)">Flip</button>
-			<button type="button" class="btn btn-default">Edit</button>
+			<button type="button" class="btn btn-default" ng-click="edit()">Edit</button>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6" ng-show="editing">
 			<textarea class="form-control" rows="10" ng-model="rawText"></textarea>
 			<button type="button" class="btn btn-default" ng-click="parse(rawText, deckService)">Parse</button>
 		</div>

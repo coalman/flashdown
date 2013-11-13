@@ -1,16 +1,31 @@
 start
-	= bullet*
+	= cards:card* 
+	{
+		return { 
+			"name": "todo", 
+			"description": "todo", 
+			"cards": cards
+		};
+	}
 
-bullet
-	= whitespace* '*' q:text { return { "type": "question", "data": q }; }
-	/ whitespace* '-' a:text { return { "type": "answer", "data": a }; }
-	/ whitespace* '+' c:text { return { "type": "comment", "data": c }; }
+card
+	= q:question answers:answer*
+	{ return { "front": q, "back": answers.join('\n\n') }; }
+
+question
+	= whitespace* '+' q:text { return q; }
+
+answer
+	= whitespace* '-' a:text { return a; }
 
 text
-	= t:(line*) { return t.join(''); }
+	= f:firstline t:(line*) { return f + t.join(''); }
+
+firstline
+	= c:[^\r\n]* newline? { return c.join(''); }
 
 line
-	= space* l:[^*+-] c:[^\r\n]* newline? { return l + c.join(''); }
+	= space* l:[^+-] c:[^\r\n]* newline? { return l + c.join(''); }
 
 whitespace
 	= space

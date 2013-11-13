@@ -1,31 +1,45 @@
 'use strict';
 
-app.controller('CardController', function($scope, deck) {
-	$scope.index = 0;
-	$scope.front = true;
-	$scope.deck = deck;
+app.controller('CardController', function($scope, DeckService) {
+	$scope.deckService = DeckService;
+	$scope.rawText = '';
 	$scope.presenter = {
-		content: $scope.deck.cards[0].front,
-		next: function() {
-			$scope.index += 1;
-			if ($scope.index >= $scope.deck.cards.length) {
-				$scope.index = 0;
+		index: 0,
+		front: true,
+		content: null,
+		next: function(deck) {
+			this.index += 1;
+			if (this.index >= deck.cards.length) {
+				this.index = 0;
 			}
-			this.content = $scope.deck.cards[$scope.index].front;
-			$scope.front = true;
+			this.content = deck.cards[this.index].front;
+			this.front = true;
 		},
-		back: function() {
-			$scope.index -= 1;
-			if ($scope.index < 0) {
-				$scope.index = $scope.deck.cards.length - 1;
+		back: function(deck) {
+			this.index -= 1;
+			if (this.index < 0) {
+				this.index = deck.cards.length - 1;
 			}
-			this.content = $scope.deck.cards[$scope.index].front;
-			$scope.front = true;
+			this.content = deck.cards[this.index].front;
+			this.front = true;
 		},
-		flip: function() {
-			$scope.front = !($scope.front);
-			this.content = ($scope.front ? $scope.deck.cards[$scope.index].front :
-				$scope.deck.cards[$scope.index].back);
+		flip: function(deck) {
+			this.front = !(this.front);
+			this.content = (this.front ?
+				deck.cards[this.index].front :
+				deck.cards[this.index].back);
+		},
+		reset: function(deck) {
+			this.index = 0;
+			this.front = true;
+			this.content = deck.cards[this.index].front;
 		}
+	};
+	$scope.presenter.reset($scope.deckService.deck);
+	$scope.$watch('deckService.deck', function(newValue, oldValue) {
+		$scope.presenter.reset($scope.deckService.deck);
+	});
+	$scope.parse = function(rawText, deckService) {
+		deckService.deck = parser.parse(rawText);
 	};
 });

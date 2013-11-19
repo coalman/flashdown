@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('CardController', function($scope, DeckService) {
+app.controller('CardController', function($scope, DeckService, DeckParser) {
 	$scope.deckService = DeckService;
 	$scope.rawText = '';
 	$scope.presenter = {
@@ -45,6 +45,6 @@ app.controller('CardController', function($scope, DeckService) {
 		$scope.editing = !($scope.editing);
 	};
 	$scope.parse = function(rawText, deckService) {
-		deckService.deck = parser.parse(rawText);
+		deckService.deck = DeckParser.parse(rawText);
 	};
 });

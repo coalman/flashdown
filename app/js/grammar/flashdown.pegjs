@@ -46,14 +46,73 @@
 }
 
 start
-	= span*
+	= header:headerElem? content:contentElements
+		{
+			return {
+				header: header,
+				content: content
+			};
+		}
 
-span
+headerElem
+	= []
+
+contentElements
+	= elem:(questionItem / answerItem / commentItem)*
+		{ return elem; }
+
+itemStart
+	= questionItemStart
+	/ answerItemStart
+	/ commentItemStart
+questionItemStart
+	= whitespace "*" s
+answerItemStart
+	= whitespace "-" s
+commentItemStart
+	= whitespace "+" s
+
+questionItem
+	= questionItemStart space p:paragraphElem*
+		{
+			return {
+				type: 'question',
+				paragraphs: p
+			};
+		}
+answerItem
+	= answerItemStart space p:paragraphElem*
+		{
+			return {
+				type: 'answer',
+				paragraphs: p
+			};
+		}
+commentItem
+	= commentItemStart (!(n itemStart) s:. { return s; })*
+		{
+			return {
+				type: 'comment'
+			};
+		}
+
+paragraphElem
+	= !(n itemStart) whitespace spans:paragraphSpan+
+		{
+			return {
+				spans: condenseSpans(spans)
+			};
+		}
+
+paragraphSpan
 	= italicSpan
 	/ boldSpan
 	/ linkSpan
 	/ imgSpan
-	/ lineBreakSpan
+	/ !paragraphBreak !(n itemStart) 
+		s:(lineBreakSpan
+		/ s:(hardWrapChar / .) { return s; })
+		{ return s; }
 
 italicSpan
 	= asteriskSpan
@@ -131,6 +190,10 @@ doubleAsteriskSpanSpan
 	/ ![*] s:. { return s; }
 
 linkSpan
+	= inlineLinkSpan
+	/ refLinkSpan
+	/ autoLinkSpan
+inlineLinkSpan
 	= &{ return tryPushSpanStack('a'); }
 		"[" spans:linkSpanSpan+ "](" 
 		url:(u:[^\)\r\n \t]* { return u.join(''); }) 
@@ -143,6 +206,32 @@ linkSpan
 				title: title,
 				spans: condenseSpans(spans)
 			}
+		}
+	/ &{ popStack('a'); } FailMatch
+refLinkSpan
+	= &{ return tryPushSpanStack('a'); }
+		"[" spans:linkSpanSpan+ "][" 
+		ref:(u:[^\r\n\]]* { return u.join(''); }) "]"
+		{
+			popStack('a');
+			return {
+				type: 'a',
+				ref: ref,
+				spans: condenseSpans(spans)
+			}
+		}
+	/ &{ popStack('a'); } FailMatch
+autoLinkSpan
+	= &{ return tryPushSpanStack('a'); }
+		"<" url:(u:[^\r\n>]+ { return u.join(''); }) ">"
+		{
+			popStack('a');
+			return {
+				type: 'a',
+				url: url,
+				title: url,
+				spans: url
+			};
 		}
 	/ &{ popStack('a'); } FailMatch
 linkSpanSpan
@@ -178,6 +267,9 @@ titleSpanNewLineChar
 	/ hardWrapChar
 
 imgSpan
+	= inlineImgSpan
+	/ refImgSpan
+inlineImgSpan
 	= &{ return tryPushSpanStack('img'); }
 		"![" spans:imgSpanSpan+ "](" 
 		url:(u:[^\)\r\n \t]* { return u.join(''); })
@@ -188,6 +280,19 @@ imgSpan
 				type: 'img',
 				url: url,
 				title: title,
+				spans: spans.join('')
+			}
+		}
+	/ &{ popStack('img'); } FailMatch
+refImgSpan
+	= &{ return tryPushSpanStack('img'); }
+		"![" spans:imgSpanSpan+ "][" 
+		ref:(u:[^\r\n\]]* { return u.join(''); }) "]"
+		{
+			popStack('img');
+			return {
+				type: 'img',
+				ref: ref,
 				spans: spans.join('')
 			}
 		}
@@ -208,9 +313,9 @@ escapedLiteral
 	/ "\\]" { return '['; }
 	/ "\\\\" { return '\\'; }
 hardWrapChar
-	= n { return ' '; }
+	= n space { return ' '; }
 lineBreakSpan
-	= (" " s+ n / "\t" s* n)
+	= (" " s+ n / "\t" s* n) space
 		{
 			return {
 				type: "br"

@@ -56,15 +56,30 @@ start
 
 headerElem
 	= []
+		{
+			return {
+				author: '',
+				title: '',
+				date: '',
+				tags: [],
+				summary: ''
+			};
+		}
 
 contentElements
-	= elem:(questionItem / answerItem / commentItem)*
+	= elem:contentElement*
 		{ return elem; }
+contentElement
+	= questionItem
+	/ answerItem
+	/ commentItem
+	/ referenceItem
 
 itemStart
 	= questionItemStart
 	/ answerItemStart
 	/ commentItemStart
+	/ referenceItem
 questionItemStart
 	= whitespace "*" s
 answerItemStart
@@ -93,6 +108,18 @@ commentItem
 		{
 			return {
 				type: 'comment'
+			};
+		}
+referenceItem
+	= whitespace "[" id:([^\n\r\]]+) "]:" space 
+		url:(u:[^\n\r \t]+ { return u.join(''); })
+		title:(s+ n? space t:titleSpan { return t; })? space
+		{
+			return {
+				type: 'ref',
+				id: id.join(''),
+				url: url,
+				title: title
 			};
 		}
 
@@ -195,7 +222,7 @@ linkSpan
 	/ autoLinkSpan
 inlineLinkSpan
 	= &{ return tryPushSpanStack('a'); }
-		"[" spans:linkSpanSpan+ "](" 
+		"[" spans:linkSpanSpan+ "](" space
 		url:(u:[^\)\r\n \t]* { return u.join(''); }) 
 		title:(s+ t:titleQuoteSpan { return t; })? space ")"
 		{
@@ -210,7 +237,7 @@ inlineLinkSpan
 	/ &{ popStack('a'); } FailMatch
 refLinkSpan
 	= &{ return tryPushSpanStack('a'); }
-		"[" spans:linkSpanSpan+ "][" 
+		"[" spans:linkSpanSpan+ ("][" / "] [")
 		ref:(u:[^\r\n\]]* { return u.join(''); }) "]"
 		{
 			popStack('a');
@@ -271,7 +298,7 @@ imgSpan
 	/ refImgSpan
 inlineImgSpan
 	= &{ return tryPushSpanStack('img'); }
-		"![" spans:imgSpanSpan+ "](" 
+		"![" spans:imgSpanSpan+ "](" space
 		url:(u:[^\)\r\n \t]* { return u.join(''); })
 		title:(s+ t:titleQuoteSpan { return t; })? space ")"
 		{
@@ -286,7 +313,7 @@ inlineImgSpan
 	/ &{ popStack('img'); } FailMatch
 refImgSpan
 	= &{ return tryPushSpanStack('img'); }
-		"![" spans:imgSpanSpan+ "][" 
+		"![" spans:imgSpanSpan+ "]["
 		ref:(u:[^\r\n\]]* { return u.join(''); }) "]"
 		{
 			popStack('img');

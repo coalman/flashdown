@@ -10,7 +10,7 @@
 			<button type="button" class="btn btn-default" ng-click="edit()">Edit</button>
 		</div>
 		<div class="col-md-6" ng-show="editing">
-			<textarea class="form-control" rows="10" ng-model="rawText"></textarea>
+			<textarea id="quickEditBox" class="form-control" rows="10" ng-model="rawText"></textarea>
 			<button type="button" class="btn btn-default" ng-click="parse(rawText, deckService)">Parse</button>
 		</div>
 	</div>

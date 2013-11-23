@@ -1,21 +1,35 @@
-<div class="container">
+<div class="container" ng-controller="ViewerCtrl as viewer">
 	<div class="row">
-		<button type="button" class="btn btn-default">Github</button>
-		<button type="button" class="btn btn-default">Import</button>
+		<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-hdd"></span></button>
 	</div>
 	<div class="row">
-		<div class="col-md-6" ng-class="{'col-md-offset-3': !editing}">
+		<div class="col-lg-6" ng-class="{'col-lg-offset-3': !viewer.editorData.editing}">
 			<div class="panel panel-default">
-				<div class="panel-body" ng-bind-html="presenter.content"></div>
+				<div class="panel-body">
+					<button type="button" class="btn btn-default" ng-click="viewer.shuffle()"><span class="glyphicon glyphicon-random"></span></button>
+					<button type="button" class="btn btn-default" ng-click="viewer.clear()"><span class="glyphicon glyphicon-refresh"></span></button>
+					<button type="button" class="btn btn-default" ng-click="viewer.changeSideMode()"><span class="glyphicon" ng-class="{ 'glyphicon-unchecked': !viewer.presenter.frontFirst, 'glyphicon-stop': viewer.presenter.frontFirst }"></span></button>
+
+					<div class="card-container">
+						<button type="button" class="left-arrow btn btn-default" ng-click="viewer.presenter.back(viewer.deckData.deck)">
+							<span class="glyphicon glyphicon-circle-arrow-left"></span>
+						</button>
+						<div class="card-content" ng-bind-html="viewer.presenter.content"></div>
+						<button type="button" class="right-arrow btn btn-default" ng-click="viewer.presenter.next(viewer.deckData.deck)">
+							<span class="glyphicon glyphicon-circle-arrow-right"></span>
+						</button>
+					</div>
+
+					<button type="button" class="btn btn-default" ng-click="viewer.presenter.flip(viewer.deckData.deck)"><span class="glyphicon glyphicon-repeat"></span></button>
+				</div>
 			</div>
-			<button type="button" class="btn btn-default" ng-click="presenter.next(deckService.deck)">Next</button>
-			<button type="button" class="btn btn-default" ng-click="presenter.back(deckService.deck)">Back</button>
-			<button type="button" class="btn btn-default" ng-click="presenter.flip(deckService.deck)">Flip</button>
-			<button type="button" class="btn btn-default" ng-click="edit()">Edit</button>
 		</div>
-		<div class="col-md-6" ng-show="editing">
-			<textarea id="quickEditBox" class="form-control" rows="10" ng-model="rawText"></textarea>
-			<button type="button" class="btn btn-default" ng-click="parse(rawText, deckService)">Parse</button>
+		<div class="col-lg-6" ng-controller="EditorCtrl as editor" ng-class="{'col-lg-offset-3': !viewer.editorData.editing}">
+			<button type="button" class="btn btn-default btn-block" ng-click="editor.onToggle()">{{editor.data.editing ? 'Done' : 'Edit' }}</button>
+			<div ng-show="editor.data.editing">
+				<textarea id="quickEditBox" class="form-control" rows="10" ng-model="editor.data.rawText"></textarea>
+				<button type="button" class="btn btn-default btn-block" ng-click="editor.onParse()">Parse</button>
+			</div>
 		</div>
 	</div>
 </div>

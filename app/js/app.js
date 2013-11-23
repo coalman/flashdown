@@ -4,7 +4,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state('home', {
 			url: '/',
-			templateUrl: '/templates/home.html',
-			controller: 'CardController'
+			templateUrl: '/templates/home.html'
 		});
 });

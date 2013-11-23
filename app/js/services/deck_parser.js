@@ -131,10 +131,9 @@ app.factory('DeckParser', function() {
 			for (; i < elem.length; i++) {
 				card.back += parseParagraphs(elem[i].paragraphs, references);
 			}
-			console.log("parsed a card");
 			cards.push(card);
 		});
-		console.log(cards);
+		
 		return {
 			name: 'Name',
 			description: 'Description',

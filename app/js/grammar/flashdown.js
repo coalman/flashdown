@@ -3267,23 +3267,18 @@ fdownParser = (function(){
       	var spanStack = [];
       
       	function tryPushSpanStack(span) {
-      		console.log('try push: ' + span);
       		if (spanStack.indexOf(span) !== -1) {
-      			console.log('push[no]: ' + span);
       			return false;
       		}
       
-      		console.log('push[yes]: ' + span);
       		spanStack.push(span);
       		return true;
       	}
       	function popStack(span) {
       		if (spanStack.length > 0 &&
       			spanStack[spanStack.length - 1] === span) {
-      			console.log('pop[yes]: ' + span);
+      
       			spanStack.pop();
-      		} else {
-      			console.log('pop[no]: ' + span);
       		}
       	}
       	function condenseSpans(spans) {

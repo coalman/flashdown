@@ -9,6 +9,6 @@ app.controller('EditorCtrl', function($scope, DeckData, EditorData) {
 	};
 
 	this.onParse = function() {
-		this.deckData.parse(this.data.rawText);
+		this.data.parseText();
 	};
 });

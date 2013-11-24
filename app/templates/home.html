@@ -1,6 +1,7 @@
 <div class="container" ng-controller="ViewerCtrl as viewer">
-	<div class="row">
-		<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-hdd"></span></button>
+	<div class="row" ng-controller="ImportCtrl as importer">
+		<input type="file">
+		<button type="button" class="btn btn-default" ng-click="importer.onHddClick()"><span class="glyphicon glyphicon-hdd"></span></button>
 	</div>
 	<div class="row">
 		<div class="col-lg-6" ng-class="{'col-lg-offset-3': !viewer.editorData.editing}">

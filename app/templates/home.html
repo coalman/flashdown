@@ -25,7 +25,7 @@
 		</div>
 		<div class="span6 offset3" ng-controller="EditorCtrl as editor">
 			<div ng-show="viewer.editing">
-				<textarea id="quickEditBox" rows="10" ng-model="editor.data.rawText" class="input-block-level"></textarea>
+				<div data-ace ng-model="editor.data.rawText"></div>
 				<button type="button" class="btn btn-primary" ng-click="editor.onParse()">Parse</button>
 				<button type="button" class="btn btn-danger" ng-click="viewer.onEditToggle()">Cancel</button>
 			</div>

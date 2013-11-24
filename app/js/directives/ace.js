@@ -8,6 +8,7 @@ app.directive('ace', function() {
 			var aceObj = window.ace.edit(element[0]);
 			var session = aceObj.getSession();
 			session.setMode('ace/mode/markdown');
+			session.setUseWrapMode(true);
 			aceObj.setTheme('ace/theme/dawn');
 
 			if (ngModel) {

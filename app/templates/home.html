@@ -8,6 +8,7 @@
 				<button type="button" class="btn btn-default" ng-click="viewer.shuffle()"><i class="icon-random"></i></button>
 				<button type="button" class="btn btn-default" ng-click="viewer.clear()"><i class="icon-refresh"></i></button>
 				<button type="button" class="btn btn-default" ng-click="viewer.changeSideMode()"><i class="glyphicon" ng-class="{ 'icon-unchecked': !viewer.presenter.frontFirst, 'icon-stop': viewer.presenter.frontFirst }"></i></button>
+				<button type="button" class="btn" ng-click="viewer.onEditToggle()" ng-class="{disabled: viewer.editing}"><i class="icon-edit"></i></button>
 
 				<div class="card-container">
 					<button type="button" class="left-arrow btn btn-default" ng-click="viewer.presenter.back(viewer.deckData.deck)">
@@ -22,11 +23,11 @@
 				<button type="button" class="btn btn-default" ng-click="viewer.presenter.flip(viewer.deckData.deck)"><i class="icon-repeat"></i></button>
 			</div>
 		</div>
-		<div class="span6" ng-controller="EditorCtrl as editor" ng-class="{offset3: !viewer.editorData.editing}">
-			<button type="button" class="btn btn-default btn-block" ng-click="editor.onToggle()"><i class="icon-edit"></i></button>
-			<div ng-show="editor.data.editing">
+		<div class="span6" ng-controller="EditorCtrl as editor" ng-class="{offset3: viewer.editing}">
+			<div ng-show="viewer.editing">
 				<textarea id="quickEditBox" rows="10" ng-model="editor.data.rawText" class="input-block-level"></textarea>
-				<button type="button" class="btn btn-default btn-block" ng-click="editor.onParse()">Parse</button>
+				<button type="button" class="btn btn-primary" ng-click="editor.onParse()">Parse</button>
+				<button type="button" class="btn btn-danger" ng-click="viewer.onEditToggle()">Cancel</button>
 			</div>
 		</div>
 	</div>

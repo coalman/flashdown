@@ -1,6 +1,11 @@
 'use strict';
 
 app.controller('ViewerCtrl', function($scope, DeckData, EditorData) {
+	this.editing = false;
+	this.onEditToggle = function() {
+		this.editing = !(this.editing);
+	};
+
 	this.deckData = DeckData;
 	this.editorData = EditorData;
 	this.presenter = {

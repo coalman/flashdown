@@ -3,22 +3,20 @@
 		<button type="button" class="btn" ng-click="importer.onHddClick()"><i class="fa fa-hdd-o"></i></button>
 	</div>
 	<div class="row">
-		<div class="span6" ng-class="{offset3: !viewer.editorData.editing}">
+		<div class="card-container span6" ng-class="{offset3: !viewer.editorData.editing}">
 			<div class="well">
 				<button type="button" class="btn btn-default" ng-click="viewer.shuffle()"><i class="fa fa-random"></i></button>
 				<button type="button" class="btn btn-default" ng-click="viewer.clear()"><i class="fa fa-refresh"></i></button>
 				<button type="button" class="btn btn-default" ng-click="viewer.changeSideMode()"><i class="fa" ng-class="{ 'fa-square-o': !viewer.presenter.frontFirst, 'fa-square': viewer.presenter.frontFirst }"></i></button>
 				<button type="button" class="btn" ng-click="viewer.onEditToggle()" ng-class="{disabled: viewer.editing}"><i class="fa fa-pencil-square"></i></button>
+				<button type="button" class="left-arrow btn btn-default" ng-click="viewer.presenter.back(viewer.deckData.deck)">
+					<i class="fa fa-arrow-left"></i>
+				</button>
+				<button type="button" class="right-arrow btn btn-default" ng-click="viewer.presenter.next(viewer.deckData.deck)">
+					<i class="fa fa-arrow-right"></i>
+				</button>
 
-				<div class="card-container">
-					<button type="button" class="left-arrow btn btn-default" ng-click="viewer.presenter.back(viewer.deckData.deck)">
-						<i class="fa fa-arrow-left"></i>
-					</button>
-					<div class="card-content" ng-bind-html="viewer.presenter.content"></div>
-					<button type="button" class="right-arrow btn btn-default" ng-click="viewer.presenter.next(viewer.deckData.deck)">
-						<i class="fa fa-arrow-right"></i>
-					</button>
-				</div>
+				<div class="card-content" ng-bind-html="viewer.presenter.content"></div>
 
 				<button type="button" class="btn btn-default" ng-click="viewer.presenter.flip(viewer.deckData.deck)"><i class="fa fa-repeat"></i></button>
 			</div>

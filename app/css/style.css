@@ -2,8 +2,8 @@
 	font-family: monospace
 }
 
-.card-container {
-	position: relative;
+.ace_editor {
+  height: 300px;
 }
 
 .card-content {
@@ -13,6 +13,12 @@
 	margin-right: auto;
 }
 
+.card-container {
+	position: relative;
+	min-width: 400px;
+}
+
+/*
 .right-arrow {
 	display: block;
 	position: absolute;
@@ -28,7 +34,4 @@
 	height: 100%;
 	left: 0px;
 }
-
-.ace_editor {
-  height: 300px;
-}
+*/

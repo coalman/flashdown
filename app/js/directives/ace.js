@@ -7,7 +7,8 @@ app.directive('ace', function() {
 		link: function(scope, element, attrs, ngModel) {
 			var aceObj = window.ace.edit(element[0]);
 			var session = aceObj.getSession();
-			session.setMode("ace/mode/markdown");
+			session.setMode('ace/mode/markdown');
+			aceObj.setTheme('ace/theme/dawn');
 
 			if (ngModel) {
 				ngModel.$formatters.push(function(value) {

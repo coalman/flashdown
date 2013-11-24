@@ -75,7 +75,12 @@ app.factory('DeckParser', function() {
 	}
 
 	function parseDeck(rawStr) {
-		var data = fdownParser.parse(rawStr);
+		var data = null;
+		try {
+			var data = fdownParser.parse(rawStr);
+		} catch (e) {
+			return e;
+		}
 
 		var cardBlocks = [];
 		var currentCardBlock = null;

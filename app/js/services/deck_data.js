@@ -14,7 +14,14 @@ app.service('DeckData', function($rootScope, DeckParser) {
 		};
 	};
 	this.parse = function(rawStr) {
-		this.deckTemplate = DeckParser.parse(rawStr);
+		var result = DeckParser.parse(rawStr);
+
+		if (result.message) {
+			this.error = result;
+			return;
+		}
+
+		this.deckTemplate = result;
 		$rootScope.$broadcast('deckParsed');
 	};
 	this.shuffleDeck = function() {
@@ -36,4 +43,5 @@ app.service('DeckData', function($rootScope, DeckParser) {
 
 	this.deckTemplate = this.emptyDeck();
 	this.deck = this.emptyDeck();
+	this.error = null;
 });

@@ -2,15 +2,13 @@
 	font-family: monospace
 }
 
-/*
 .card-container {
 	position: relative;
 }
 
 .card-content {
 	position: relative;
-	width: 400px;
-	height: 200px;
+	min-height: 200px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -30,4 +28,3 @@
 	height: 100%;
 	left: 0px;
 }
-*/

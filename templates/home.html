@@ -23,7 +23,7 @@
 	</div>
 	<div class="editor-container" ng-controller="EditorCtrl as editor">
 		<div ng-show="viewer.editing" class="well">
-			<div data-ace ng-model="editor.data.rawText"></div>
+			<textarea class="editor-txt" ng-model="editor.data.rawText"></textarea>
 			<button type="button" class="btn btn-primary" ng-click="editor.onParse()">Parse</button>
 			<button type="button" class="btn btn-danger" ng-click="viewer.onEditToggle()">Cancel</button>
 		</div>

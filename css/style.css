@@ -2,12 +2,10 @@
 	font-family: monospace
 }
 
-.ace_editor {
+.editor-txt {
 	height: 300px;
 	margin-bottom: 10px;
-	border: solid;
-	border-width: 3px;
-	border-color: #dcdcdc;
+	font-family: monospace;
 }
 
 .card-content {

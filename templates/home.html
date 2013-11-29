@@ -1,0 +1,36 @@
+<div class="container" ng-controller="ViewerCtrl as viewer">
+	<div class="well card-container">
+		<button type="button" class="btn btn-small" ng-click="viewer.presenter.flip(viewer.deckData.deck)"><i class="fa fa-lg fa-repeat"></i></button>
+		<button type="button" class="btn btn-small" ng-click="viewer.shuffle()"><i class="fa fa-lg fa-random"></i></button>
+		<button type="button" class="btn btn-small" ng-click="viewer.clear()"><i class="fa fa-lg fa-refresh"></i></button>
+		<button type="button" class="btn btn-small" ng-click="viewer.changeSideMode()"><i class="fa fa-lg" ng-class="{ 'fa-square-o': !viewer.presenter.frontFirst, 'fa-square': viewer.presenter.frontFirst }"></i></button>
+		<button type="button" class="btn btn-small" ng-click="viewer.onEditToggle()" ng-class="{disabled: viewer.editing}"><i class="fa fa-lg fa-pencil-square"></i></button>
+		<span ng-controller="ImportCtrl as importer">
+			<button type="button" class="btn btn-small" ng-click="importer.onHddClick()"><i class="fa fa-lg fa-hdd-o"></i></button>
+		</span>
+
+		<div class="card-content-container">
+			<div class="left-arrow-btn" ng-click="viewer.presenter.back(viewer.deckData.deck)">
+				<span class="fa fa-lg fa-arrow-left left-arrow"></span>
+			</div>
+			<div class="card" ng-click="viewer.presenter.flip(viewer.deckData.deck)">
+				<div class="card-content" ng-bind-html="viewer.presenter.content"></div>
+			</div>
+			<div class="right-arrow-btn" ng-click="viewer.presenter.next(viewer.deckData.deck)">
+				<span class="fa fa-lg fa-arrow-right right-arrow"></span>
+			</div>
+		</div>
+	</div>
+	<div class="editor-container" ng-controller="EditorCtrl as editor">
+		<div ng-show="viewer.editing" class="well">
+			<div data-ace ng-model="editor.data.rawText"></div>
+			<button type="button" class="btn btn-primary" ng-click="editor.onParse()">Parse</button>
+			<button type="button" class="btn btn-danger" ng-click="viewer.onEditToggle()">Cancel</button>
+		</div>
+		<div class="alert alert-error" ng-show="editor.deckData.error !== null">
+			<button type="button" class="close" aria-hiddin="true" ng-click="editor.removeError()">&times;</button>
+			<strong>{{editor.deckData.error.name}}</strong>
+			<p>Line: {{editor.deckData.error.line}} in column {{editor.deckData.error.column}} :: {{editor.deckData.error.message}}</p>
+		</div>
+	</div>
+</div>
